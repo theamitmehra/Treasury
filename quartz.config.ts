@@ -8,7 +8,7 @@ import * as Plugin from "./quartz/plugins"
  */
 const config: QuartzConfig = {
   configuration: {
-    pageTitle: "🪴 Quartz 4.0",
+    pageTitle: "🐈Amit Mehra",
     pageTitleSuffix: "",
     enableSPA: true,
     enablePopovers: true,
@@ -63,7 +63,7 @@ const config: QuartzConfig = {
         theme: {
           light: "github-light",
           // dark: "github-dark",
-          dark: "andromeeda",
+          dark: "everforest-dark",
         },
         keepBackground: false,
       }),

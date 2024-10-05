@@ -63,7 +63,7 @@ const config: QuartzConfig = {
         theme: {
           light: "github-light",
           // dark: "github-dark",
-          dark: "rose-pine",
+          dark: "andromeeda",
         },
         keepBackground: false,
       }),

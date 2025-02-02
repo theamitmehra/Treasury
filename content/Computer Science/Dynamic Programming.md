@@ -47,21 +47,12 @@ The **Cut-Rod** procedure implements the computation implicit in equation $(II)$
 
 Procedure takes as input an array $p[1 : n]$ of prices and an integer $n,$ an= it returns the maximum revenue possible for a rod of length $n$. For length $n = 0,$ no revenue is possible, and so **Cut-Rod** returns $0$. Procedure initializes the maximum revenue $q$ to $-\infty,$ so that the for loop correctly computes $q = \max \{p_i +$ **Cut-Rod**$(p, n - i) : 1 \leqslant i \leqslant n\}$. A simple induction on $n$ proves that this answer is equal to the desired answer $r_n,$ using equation $(II)$.
 
-* **procedure** Cut-Rod$(p, n)$
-  
-  if $n == 0$  
-  $\qquad$return $0$  
-  $q = - \infty$  
-  for $i = 1$ to $n$  
-  $\qquad$$q = \max \{q, p[i] + \text{Cut-Rod}(p, n - i)\}$  
-  return $q$  
-
 > [!summary] Cut-Rod$\,(p,n)$
 > if $n == 0$  
 > $\qquad$return $0$  
 > $q = - \infty$  
 > for $i = 1$ to $n$  
-> $\qquad$$q = \max \{q, p[i] + \text{Cut-Rod}(p, n - i)\}$  
+> $\qquad q = \max \{q, p[i] + \text{Cut-Rod}(p, n - i)\}$  
 > return $q$  
 
 *Why is* **Cut-Rod** *so inefficient?* 
@@ -100,43 +91,21 @@ These two approaches yield algorithms with the same asymptotic running time, exc
 The procedures **Memoized-Cut-Rod** and **Memoized-Cut-Rod-Aux** demonstrate how to memoize the top-down **Cut-Rod** procedure. The main procedure **Memoized-Cut-Rod** initializes a new auxiliary array $r[0 : n]$ with the value $-\infty$ which, since known revenue values are always nonnegative, is a convenient choice for denoting "unknown."
 **Memoized-Cut-Rod** then calls its helper procedure, **Memoized-Cut-Rod-Aux**, which is just the memoized version of the exponential-time procedure, **Cut-Rod**. It first checks to see whether the desired value is already known and, if it is, then lines returns it. Otherwise, lines compute the desired value $q$ in the usual manner, saves it in $r[n],$ and returns it.
 
-* **procedure** Memoized-Cut-Rod$(p, n)$
-  
-  let $r[0 : n]$ be a new array
-  for $i = 0$ to $n$
-  $\qquad$$r[i] = -\infty$
-  return Memoized-Cut-Rod$(p, n, r)$
-
 > [!summary] Memoized-Cut-Rod$(p,n)$
 >   let $r[0 : n]$ be a new array
 >   for $i = 0$ to $n$
->   $\qquad$$r[i] = -\infty$
+>   $\qquad r[i] = -\infty$
 >   return Memoized-Cut-Rod$(p, n, r)$
-
-* **procedure** Memoized-Cut-Rod-Aux$(p, n, r)$
-  
-  if $r[n] \geqslant 0$
-  $\qquad$return $r[n]$
-  
-  if $n == 0$
-  $\qquad$$q = 0$
-  else
-  $\qquad$$q = -\infty$
-  $\qquad$for $i = 1$ to $n$
-  $\qquad \qquad$$q = \max \{q, p[i] + \text{Memoized-Cut-Rod-Aux}(p, n - i, r)\}$
-  $r[n] = q$
-  return $q$
-
 
 > [!summary] Memoized-Cut-Rod-Aux $(p, n, r)$
 >if $r[n] \geqslant 0$
 > $\qquad$ return $r[n]$ 
 > if $n == 0$
->$\qquad$$q = 0$
+>$\qquad q = 0$
 > else
-> $\qquad$$q = -\infty$
+> $\qquad q = -\infty$
 > $\qquad$for $i = 1$ to $n$
-> $\qquad \qquad$$q = \max \{q, p[i] + \text{Memoized-Cut-Rod-Aux}(p, n - i, r)\}$
+> $\qquad \qquad q = \max \{q, p[i] + \text{Memoized-Cut-Rod-Aux}(p, n - i, r)\}$
 > $r[n] = q$
 > return $q$
 
@@ -144,28 +113,15 @@ The bottom-up version, **Bottom-Up-Cut-Rod**, is even simpler. Using the bottom-
 
 First line of **Bottom-Up-Cut-Rod** creates a new array $r[0 : n]$ in which to save the results of the subproblems, and then next line initializes $r[0]$ to $0,$ since a rod of length $0$ earns no revenue. Lines solve each subproblem of size $j,$ for $j = 0, 1, \ldots, n,$ in order of increasing size. The approach used to solve a problem of a particular size $j$ is the same as that used by **Cut-Rod**, except that procedure now directly references array entry $r[j - i]$ instead of making a recursive call to solve the subproblem of size $j - i$. Lines then saves in $r[j]$ the solution to the subproblem of size $j$. Finally, procedure returns $r[n],$ which equals the optimal value $r_n$.
 
-* **procedure** Bottom-Up-Cut-Rod$(p, n)$
-  
-  let $r[0 : n]$ be a new array
-  $r[0] = 0$
-  
-  for $j = 1$ to $n$
-  $\qquad$$q = -\infty$
-  $\qquad$for $i = 1$ to $j$
-  $\qquad \qquad$$q = \max \{q, p[i] + r[j - i]\}$
-  $\qquad$$r[j] = q$
-  return $r[n]$
-
-
 > [!summary] $\text{Bottom-Up-Cut-Rod}(p, n)$
->   let $r[0 : n]$ be a new array
-  $r[0] = 0$
-  **for** $j = 1$ **to** $n$
-  $\qquad$$q = -\infty$
-  $\qquad$**for** $i = 1$ **to** $j$
-  $\qquad \qquad$$q = \max \{q, p[i] + r[j - i]\}$
-  $\qquad$$r[j] = q$
-  **return** $r[n]$
+>   let $r[0 : n]$ be a new array  
+>   $r[0] = 0$  
+>   **for** $j = 1$ **to** $n$  
+>   $\qquad q = -\infty$  
+>   $\qquad$**for** $i = 1$ **to** $j$  
+>   $\qquad \qquad q = \max \{q, p[i] + r[j - i]\}$  
+>   $\qquad r[j] = q$  
+>   **return** $r[n]$  
 
 The bottom-up and top-down versions have the same asymptotic running time. The running time of **Bottom-Up-Cut-Rod** is $\Theta(n^2),$ due to its doubly nested loop structure. The number of iterations of its inner for loop forms an arithmetic series.
 The running time of its top-down counterpart, **Memoized-Cut-Rod**, is also $\Theta(n^2),$ although this running time may be a little harder to see. Because a recursive call to solve a previously solved subproblem returns immediately, **Memoized-Cut-Rod** solves each subproblem just once. It solves subproblems for sizes $0, 1, \ldots, n$. To solve a subproblem of size $n,$ the for loop iterates $n$ times. Thus, the total number of iterations of this for loop, over all recursive calls of **Memoized-Cut-Rod**, forms an arithmetic series, giving a total of $\Theta(n^2)$ iterations, just like the inner for loop of **Bottom-Up-Cut-Rod**.
@@ -188,44 +144,24 @@ Let's see how to extend the dynamic-programming approach to record not only the 
 The procedure **Extended-Bottom-Up-Cut-Rod** computes, for each rod size $j,$ not only the maximum revenue $r_j,$ but also $s_j,$ the optimal size of the first piece to cut off. It's similar to **Bottom-Up-Cut-Rod**, except that it creates the array $s,$ an= it updates $s[j]$ to hold the optimal size $i$ of the first piece to cut off when solving a subproblem of size $j$.
 
 The procedure **Print-Cut-Rod-Solution** takes as input an array $p[1 : n]$ of prices and a rod size $n$. It calls **Extended-Bottom-Up-Cut-Rod** to compute the array $s[1 : n]$ of optimal first-piece sizes. Then it prints out the complete list of piece sizes in an optimal decomposition of a rod of length $n$.
-* **procedure** Extended-Bottom-Up-Cut-Rod$(p, n)$
-  
-  let $r[0 : n]$ and $s[1 : n]$ be new arrays
-  $r[0] = 0$
-  
-  for $j = 1$ to $n$
-  $\qquad$$q = -\infty$
-  $\qquad$for $i = 1$ to $j$
-  $\qquad \qquad$if $q < p[i] + r[j - i]$
-  $\qquad \qquad \qquad$$q = p[i] + r[j - i]$
-  $\qquad \qquad \qquad$$s[j] = i$
-  $\qquad$$r[j] = q$
-  return $r$ and $s$
 
 > [!summary] Extended-Bottom-Up-Cut-Rod$(p,n)$
 >   let $r[0 : n]$ and $s[1 : n]$ be new arrays
-  $r[0] = 0$
-  for $j = 1$ to $n$
-  $\qquad$$q = -\infty$
-  $\qquad$for $i = 1$ to $j$
-  $\qquad \qquad$if $q < p[i] + r[j - i]$
-  $\qquad \qquad \qquad$$q = p[i] + r[j - i]$
-  $\qquad \qquad \qquad$$s[j] = i$
-  $\qquad$$r[j] = q$
-  return $r$ and $s$
-
-* **procedure** Print-Cut-Rod-Solution$(p, n)$
-  
-  $(r, s) = \text{Extended-Bottom-Up-Cut-Rod}(p, n)$
-  while $n > 0$
-  $\qquad$print $s[n]$
-  $\qquad$$n = n - s[n]$
+>   $r[0] = 0$
+>   for $j = 1$ to $n$
+>   $\qquad q = -\infty$
+>   $\qquad$for $i = 1$ to $j$
+>   $\qquad \qquad$if $q < p[i] + r[j - i]$
+>   $\qquad \qquad \qquad q = p[i] + r[j - i]$
+>   $\qquad \qquad \qquad s[j] = i$
+>   $\qquad r[j] = q$
+>   return $r$ and $s$
 
 > [!summary] Print-Cut-Rod-Solution $(p, n)$
-> $(r, s) =$ Extended-Bottom-Up-Cut-Rod$(p, n)$
-  while $n > 0$
-  $\qquad$print $s[n]$
-  $\qquad$$n = n - s[n]$
+> $(r, s) =$ Extended-Bottom-Up-Cut-Rod$(p, n)$  
+> while $n > 0$  
+> $\qquad$print $s[n]$  
+> $\qquad n = n - s[n]$  
 
 ## Matrix-chain Multiplication
 
@@ -244,12 +180,11 @@ For example, if the chain of matrices is $\braket{A_1, A_2, A_3, A_4},$ then you
 How you parenthesize a chain of matrices can have a dramatic impact on the cost of evaluating the product. Consider first the cost of multiplying two rectangular matrices. The standard algorithm is given by the procedure **Rectangular-Matrix-Multiply**, which generalizes the square-matrix multiplication procedure **Matrix-Multiply**.
 The **Rectangular-Matrix-Multiply** procedure computes $C = C + A \cdot B$ for three matrices $A = (a_{ij}), B = (b_{ij}),$ and $C = (c_{ij}),$ where $A$ is $p \times q,$ $B$ is $q \times r$, and $C$ is $p \times r$.
 
-* **procedure** Rectangular-Matrix-Multiply$(A, B, C, p, q, r)$
-  
-  for $i = 1$ to $p$
-  $\qquad$for $j = 1$ to $q$
-  $\qquad \qquad$for $k = 1$ to $r$
-  $\qquad \qquad \qquad$$c_{ij} = c_{ij} + a_{ik} \cdot b_{kj}$
+> [!summary] Rectangular-Matrix-Multiply$(A, B, C, p, q,r)$
+>   for $i = 1$ to $p$  
+>   $\qquad$for $j = 1$ to $q$  
+>   $\qquad \qquad$for $k = 1$ to $r$  
+>   $\qquad \qquad \qquad$$c_{ij} = c_{ij} + a_{ik} \cdot b_{kj}$  
 
 The running time of **Rectangular-Matrix-Multiply** is dominated by the number of scalar multiplications in last line, which is $pqr$. Therefore, we'll consider the cost of multiplying matrices to be the number of scalar multiplications. (The number of scalar multiplications dominates even if we consider initializing $C = 0$ to perform just $C = A \cdot B$.)
 
@@ -301,23 +236,23 @@ Fortunately, there aren't all that many distinct subproblems: just one subproble
 
 Instead of computing the solution to recurrence $(VII)$ recursively, let's compute the optimal cost by using a tabular, bottom-up approach, as in the procedure **Matrix-Chain-Order**. The input is a sequence $p = \braket{p_0, p_1, p_2, \ldots, p_n}$ of matrix dimensions, along with $n,$ so that for $i = 1, 2, \ldots, n,$ matrix $A_i$ has dimensions $p_{i - 1} \times p_i$. The procedure uses an auxiliary table $m[1 : n, 1 : n]$ to store the $m[i, j]$ costs and another auxiliary table $s[1 : n - 1, 2 : n]$ that records which index $k$ achieved the optimal cost in computing $m[i, j]$. The table $s$ will help in constructing an optimal solution.
 
- * **procedure** Matrix-Chain-Order$(p, n)$
-   
-   let $m[1 : n, 1 : n]$ and $s[1 : n - 1, 2 : n]$ be new tables
-   for $i = 1$ to $n$
-   $\qquad$$m[i, i] = 0$
-   
-   for $l = 2$ to $n$
-   $\qquad$for $i = 1$ to $n - l + 1$
-   $\qquad \qquad$$j = i + l - 1$
-   $\qquad \qquad$$m[i, j] = \infty$
-   
-   $\qquad \qquad$for $k = i$ to $j - 1$
-   $\qquad \qquad \qquad$$q = m[i, k] + m[k + 1, j] + p_{i - 1} p_k p_j$
-   $\qquad \qquad \qquad$if $q < m[i, j]$
-   $\qquad \qquad \qquad \qquad$$m[i, j] = q$
-   $\qquad \qquad \qquad \qquad$$s[i, j] = k$
-   return $m$ and $s$
+> [!summary] Matrix-Chain-Order$(p, n)$
+>    let $m[1 : n, 1 : n]$ and $s[1 : n - 1, 2 : n]$ be new tables  
+>    for $i = 1$ to $n$  
+>    $\qquad m[i, i] = 0$  
+>    $\qquad$  
+>    for $l = 2$ to $n$  
+>    $\qquad$for $i = 1$ to $n - l + 1$  
+>    $\qquad \qquad j = i + l - 1$  
+>    $\qquad \qquad m[i, j] = \infty$  
+>    $\qquad$
+>    $\qquad \qquad$for $k = i$ to $j - 1$  
+>    $\qquad \qquad \qquad$$q = m[i, k] + m[k + 1, j] + p_{i - 1} p_k p_j$  
+>    $\qquad \qquad \qquad$if $q < m[i, j]$  
+>    $\qquad \qquad \qquad \qquad m[i, j] = q$  
+>    $\qquad \qquad \qquad \qquad s[i, j] = k$  
+>    return $m$ and $s$
+
 
 *In what order should the algorithm fill in the table entries?* 
 To answer this question, let's see which entries of the table need to be accessed when computing the cost $m[i, j]$. Equation $(VII)$ tells us that to compute the cost of matrix product $A_{i : j},$ first the costs of the products $A_{i : k}$ and $A_{k + 1 : j}$ need to have been computed for all $k = i, i + 1, \ldots, j - 1$. The chain $A_{i} A_{i + 1} \cdots A_j$ consists of $j - i + 1$ matrices, and the chains $A_{i} A_{i + 1} \cdots A_k$ and $A_{k + 1} A_{k + 2} \cdots A_j$ consist of $k - i + 1$ and $j - k$ matrices, respectively. Since $k < j,$ a chain of $k - i + 1$ matrices consists of fewer than $j - i + 1$ matrices. Likewise, since $k \geqslant i,$ a chain of $j - k$ matrices consists of fewer than $j - i + 1$ matrices. Thus, the algorithm should fill in the table $m$ from shorter matrix chains to longer matrix chains. That is, for the subproblem of optimally parenthesizing the chain $A_{i} A_{i + 1} \cdots A_j,$ it makes sense to consider the subproblem size as the length $j - i + 1$ of the chain.
@@ -334,16 +269,14 @@ The final matrix multiplication in computing $A_{1 : n}$ optimally is $A_{1 : s[
 
 The recursive procedure **Print-Optimal-Parenthesization** prints an optimal parenthesization of the matrix chain product $A_{i} A_{i + 1} \cdots A_j,$ given the $s$ table computed by **Matrix-Chain-Order** and the indices $i$ and $j$. The initial call **Print-Optimal-Parenthesization** $(s, 1, n)$ prints an optimal parenthesization of the full matrix chain product $A_1 A_2 \cdots A_n$.
 
-* **procedure** Print-Optimal-Parenthesization$(s, i, j)$
-  
-  if $i == j$
-  $\qquad$print "A"$_i$
-  else
-  $\qquad$print "$($"
-  $\qquad$Print-Optimal-Parenthesization$(s, i, s[i, j])$
-  $\qquad$Print-Optimal-Parenthesization$(s, s[i, j] + 1, j)$
-  $\qquad$print "$)$"
-
+> [!summary] Print-Optimal-Parenthesization$(s, i, j)$
+>   if $i == j$  
+>   $\qquad$print "A"$_i$  
+>   else  
+>   $\qquad$print "$($"  
+>   $\qquad$Print-Optimal-Parenthesization$(s, i, s[i, j])$  
+>   $\qquad$Print-Optimal-Parenthesization$(s, s[i, j] + 1, j)$  
+>   $\qquad$print "$)$"  
 
 ## Elements of Dynamic Programming
 
@@ -459,44 +392,39 @@ Based on equation $(VIII),$ you could write an exponential-time recursive algori
 The procedure **LCS-Length** takes two sequences $X = \braket{x_1, x_2, \ldots, x_m}$ and $Y  = \braket{y_1, y_2, \ldots, y_n}$ as inputs, along with their lengths. It stores the $c[i, j]$ values in a table $c[0 : m, 0 : n],$ and it computes the entries in **row-major order**. That is, the procedure fills in the first row of $c$ from left to right, then the second row, and so on.
 The procedure also maintains the table $b[1 : m, 1 : n]$ to help in constructing an optimal solution. Intuitively, $b[i, j]$ points to the table entry corresponding to the optimal subproblem solution chosen when computing $c[i, j]$. The procedure returns the $b$ and $c$ tables, where $c[m, n]$ contains the length of an LCS of $X$ and $Y$. The running time of the procedure is $\Theta(mn),$ since each table entry takes $\Theta(1)$ time to compute.
 
-* **procedure** LCS-Length$(X, Y, m, n)$
-  $\newline$
-  let $b[1 : m, 1 : n]$ and $c[0 : m, 0 : n]$ be new tables
-  
-  for $i = 1$ to $m$
-  $\qquad$$c[i, 0] = 0$
-  for $j = 0$ to $n$
-  $\qquad$$c[0, j] = 0$
-  
-  for $i = 1$ to $m$
-  $\qquad$for $j = 1$ to $n$
-  $\qquad \qquad$if $x_i == y_j$
-  $\qquad \qquad \qquad$$c[i, j] = c[i - 1, j - 1] + 1$
-  $\qquad \qquad \qquad$$b[i, j] =$ $\nwarrow$
-  $\qquad \qquad$else if $c[i - 1, j] \geqslant c[i, j - 1]$
-  $\qquad \qquad \qquad$$c[i, j] = c[i - 1, j]$
-  $\qquad \qquad \qquad$$b[i, j] =$ $\uparrow$
-  $\qquad \qquad$else
-  $\qquad \qquad \qquad$$c[i, j] = c[i, j - 1]$
-  $\qquad \qquad \qquad$$b[i, j] =$ $\leftarrow$
- return $c$ and $b$
+> [!summary] LCS-Length$(X, Y, m, n)$
+> let $b[1 : m, 1 : n]$ and $c[0 : m, 0 : n]$ be new tables  
+> for $i = 1$ to $m$  
+> $\qquad$$c[i, 0] = 0$  
+> for $j = 0$ to $n$  
+> $\qquad$$c[0, j] = 0$  
+> for $i = 1$ to $m$  
+> $\qquad$for $j = 1$ to $n$  
+> $\qquad \qquad$if $x_i == y_j$  
+> $\qquad \qquad \qquad$$c[i, j] = c[i - 1, j - 1] + 1$  
+> $\qquad \qquad \qquad$$b[i, j] =$ $\nwarrow$  
+> $\qquad \qquad$else if $c[i - 1, j] \geqslant c[i, j - 1]$  
+> $\qquad \qquad \qquad$$c[i, j] = c[i - 1, j]$  
+> $\qquad \qquad \qquad$$b[i, j] =$ $\uparrow$  
+> $\qquad \qquad$else  
+> $\qquad \qquad \qquad$$c[i, j] = c[i, j - 1]$  
+> $\qquad \qquad \qquad$$b[i, j] =$ $\leftarrow$  
+> return $c$ and $b$  
 
 #### Step 4: Constructing an LCS
 
 With the $b$ table returned by **LCS-Length**, you can construct an LCS of $X = \braket{x_1, x_2, \ldots, x_m}$ and $Y  = \braket{y_1, y_2, \ldots, y_n}$. Begin at $b[m, n]$ and trace through the table by following the arrows. Each $\nwarrow$ encountered in an entry $b[i, j]$ implies that $x_i = y_j$ is an element of the LCS that **LCS-Length** found. This method gives you the elements of this LCS in reverse order. The recursive procedure **Print-LCS** prints out an LCS of $X$ and $Y$ in the proper, forward order.
 
-* **procedure** Print-LCS$(b, X, i, j)$
-  $\newline$
-  if $i == 0$ or $j == 0$
-  $\qquad$return
-  
-  if $b[i, j] ==$ $\nwarrow$
-  $\qquad$Print-LCS$(b, X, i - 1, j - 1)$
-  $\qquad$print $x_i$
-  else if $b[i, j] ==$ $\uparrow$
-  $\qquad$Print-LCS$(b, X, i - 1, j)$
-  else
-  $\qquad$Print-LCS$(b, X, i, j - 1)$
+> [!summary] Print-LCS$(b, X, i, j)$
+> if $i == 0$ or $j == 0$  
+> $\qquad$return  
+> if $b[i, j] == \, \nwarrow$  
+> $\qquad$Print-LCS$(b, X, i - 1, j - 1)$  
+> $\qquad$print $x_i$  
+> else if $b[i, j] ==$ $\uparrow$  
+> $\qquad$Print-LCS$(b, X, i - 1, j)$  
+> else  
+> $\qquad$Print-LCS$(b, X, i, j - 1)$  
 
 The initial call is **Print-LCS**$(b, X, m, n)$. The procedure takes $O(m + n)$ time, since it decrements at least one of $i$ and $j$ in each recursive call.
 
@@ -585,31 +513,29 @@ For the base case, compute $w[i, i - 1] = q_{i - 1}$ for $1 \leqslant i \leqslan
 
 The **Optimal-BST** procedure takes as inputs the probabilities $p_1, \ldots, p_n$ and $q_0, \ldots, q_n$ and the size $n,$ and it returns the tables $e$ and $\mathrm{root}$.
 
- * **procedure** Optimal-BST$(p, q, n)$
-   
-   let $e[1 : n + 1; 0 : n], w[1 : n + 1, 0 : n],$ and $\mathrm{root}[1 : n; 1 : n]$ be new tables
-   
-   for $i = 1$ to $n + 1$
-   $\qquad$$e[i, i - 1] = q_{i - 1}$
-   $\qquad$$w[i, i - 1] = q_{i - 1}$
-   
-   for $l = 1$ to $n$
-   $\qquad$for $i = 1$ to $n - l + 1$
-   $\qquad \qquad$$j = i + l - 1$
-   $\qquad \qquad$$e[i, j] = 1$
-   $\qquad \qquad$$w[i, j] = w[i, j - 1] + p_j + q_j$
-   
-   $\qquad \qquad$for $r = i$ to $j$
-   $\qquad \qquad \qquad$$t = e[i, r - 1] + e[r + 1, j] + w[i, j]$
-   $\qquad \qquad \qquad$if $t < e[i, j]$
-   $\qquad \qquad \qquad \qquad$$e[i, j] = t$
-   $\qquad \qquad \qquad \qquad$$\mathrm{root}[i, j] = r$
-   return $e$ and $\mathrm{root}$
+> [!summary] Optimal-BST$(p, q, n)$
+> let $e[1 : n + 1; 0 : n], w[1 : n + 1, 0 : n],$ and $\mathrm{root}[1 : n; 1 : n]$ be new tables
+> for $i = 1$ to $n + 1$
+> $\qquad e[i, i - 1] = q_{i - 1}$
+> $\qquad w[i, i - 1] = q_{i - 1}$
+> $\qquad$
+> for $l = 1$ to $n$
+> $\qquad$for $i = 1$ to $n - l + 1$
+> $\qquad \qquad j = i + l - 1$
+> $\qquad \qquad e[i, j] = 1$
+> $\qquad \qquad w[i, j] = w[i, j - 1] + p_j + q_j$
+> $\qquad$
+> $\qquad \qquad$for $r = i$ to $j$
+> $\qquad \qquad \qquad t = e[i, r - 1] + e[r + 1, j] + w[i, j]$
+> $\qquad \qquad \qquad$if $t < e[i, j]$
+> $\qquad \qquad \qquad \qquad e[i, j] = t$
+> $\qquad \qquad \qquad \qquad \mathrm{root}[i, j] = r$
+> return $e$ and $\mathrm{root}$  
 
 The very first for loop initializes the values of $e[i, i - 1]$ and $w[i, i - 1]$. Then the second for loop uses the recurrences $(XIII)$ and $(XIV)$ to compute e$[i, j]$ and $w[i, j]$ for all $1 \leqslant i \leqslant j \leqslant n$. In the first iteration, when $l = 1,$ the loop computes $e[i, i]$ and $w[i, i]$ for $i = 1, 2, \ldots, n$. The second iteration, with $l = 2,$ computes $e[i, i + 1]$ and $w[i, i + 1]$ for $i = 1, 2, \ldots, n - 1,$ and so on. The innermost for loop, tries each candidate index $r$ to determine which key $k_r$ to use as the root of an optimal binary search tree containing keys $k_i, \ldots, k_j$. This for loop saves the current value of the index $r$ in $\mathrm{root}[i, j]$ whenever it finds a better key to use as the root.
 
 The **Optimal-BST** procedure takes $\Theta(n^3)$ time, just like **Matrix-Chain-Order**. Its running time is $O(n^3),$ since its for loops are nested three deep and each loop index takes on at most $n$ values. The loop indices in **Optimal-BST** do not have exactly the same bounds as those in **Matrix-Chain-Order**, but they are within at most $1$ in all directions. Thus, like **Matrix-Chain-Order**, the **Optimal-BST** procedure takes $\Omega(n^3)$ time.
-
-
-
-
+___
+$$
+***
+$$

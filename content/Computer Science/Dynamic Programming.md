@@ -92,10 +92,16 @@ The procedures **Memoized-Cut-Rod** and **Memoized-Cut-Rod-Aux** demonstrate how
 **Memoized-Cut-Rod** then calls its helper procedure, **Memoized-Cut-Rod-Aux**, which is just the memoized version of the exponential-time procedure, **Cut-Rod**. It first checks to see whether the desired value is already known and, if it is, then lines returns it. Otherwise, lines compute the desired value $q$ in the usual manner, saves it in $r[n],$ and returns it.
 
 > [!summary] Memoized-Cut-Rod$(p,n)$
->   let $r[0 : n]$ be a new array
->   for $i = 0$ to $n$
->   $\qquad r[i] = -\infty$
->   return Memoized-Cut-Rod$(p, n, r)$
+>   let $r[0 : n]$ be a new array  
+>   for $i = 0$ to $n$  
+>   $\qquad r[i] = -\infty$  
+>   return Memoized-Cut-Rod$(p, n, r)$  
+
+> [!summary] Memoized-Cut-Rod$(p,n)$  
+> Let $r[0 : n]$ be a new array  
+> for $i = 0$ to $n$  
+> $\qquad r[i] = -\infty$  
+> Return Memoized-Cut-Rod$(p, n, r)$  
 
 > [!summary] Memoized-Cut-Rod-Aux $(p, n, r)$
 >if $r[n] \geqslant 0$

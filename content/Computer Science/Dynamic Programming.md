@@ -49,21 +49,20 @@ Procedure takes as input an array $p[1 : n]$ of prices and an integer $n,$ an= i
 
 * **procedure** Cut-Rod$(p, n)$
   
-  if $n == 0$
-  $\qquad$return $0$
-  
-  $q = - \infty$
-  for $i = 1$ to $n$
-  $\qquad$$q = \max \{q, p[i] + \text{Cut-Rod}(p, n - i)\}$
-  return $q$
+  if $n == 0$  
+  $\qquad$return $0$  
+  $q = - \infty$  
+  for $i = 1$ to $n$  
+  $\qquad$$q = \max \{q, p[i] + \text{Cut-Rod}(p, n - i)\}$  
+  return $q$  
 
 > [!summary] Cut-Rod$\,(p,n)$
- if $n == 0$
- $\qquad$return $0$
-  $q = - \infty$
-  for $i = 1$ to $n$
-  $\qquad$$q = \max \{q, p[i] + \text{Cut-Rod}(p, n - i)\}$
-  return $q$
+> if $n == 0$  
+> $\qquad$return $0$  
+> $q = - \infty$  
+> for $i = 1$ to $n$  
+> $\qquad$$q = \max \{q, p[i] + \text{Cut-Rod}(p, n - i)\}$  
+> return $q$  
 
 *Why is* **Cut-Rod** *so inefficient?* 
 The problem is that **Cut-Rod** calls itself recursively over and over again with the same parameter values, which means that it solves the same subproblems repeatedly.

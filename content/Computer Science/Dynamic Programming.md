@@ -97,17 +97,11 @@ The procedures **Memoized-Cut-Rod** and **Memoized-Cut-Rod-Aux** demonstrate how
 >   $\qquad r[i] = -\infty$  
 >   return Memoized-Cut-Rod$(p, n, r)$  
 
-> [!summary] Memoized-Cut-Rod$(p,n)$  
-> Let $r[0 : n]$ be a new array  
-> for $i = 0$ to $n$  
-> $\qquad r[i] = -\infty$  
-> Return Memoized-Cut-Rod$(p, n, r)$  
-
 > [!summary] Memoized-Cut-Rod-Aux $(p, n, r)$
->if $r[n] \geqslant 0$
+> if $r[n] \geqslant 0$
 > $\qquad$ return $r[n]$ 
 > if $n == 0$
->$\qquad q = 0$
+> $\qquad q = 0$
 > else
 > $\qquad q = -\infty$
 > $\qquad$for $i = 1$ to $n$
@@ -152,16 +146,16 @@ The procedure **Extended-Bottom-Up-Cut-Rod** computes, for each rod size $j,$ no
 The procedure **Print-Cut-Rod-Solution** takes as input an array $p[1 : n]$ of prices and a rod size $n$. It calls **Extended-Bottom-Up-Cut-Rod** to compute the array $s[1 : n]$ of optimal first-piece sizes. Then it prints out the complete list of piece sizes in an optimal decomposition of a rod of length $n$.
 
 > [!summary] Extended-Bottom-Up-Cut-Rod$(p,n)$
->   let $r[0 : n]$ and $s[1 : n]$ be new arrays
->   $r[0] = 0$
->   for $j = 1$ to $n$
->   $\qquad q = -\infty$
->   $\qquad$for $i = 1$ to $j$
->   $\qquad \qquad$if $q < p[i] + r[j - i]$
->   $\qquad \qquad \qquad q = p[i] + r[j - i]$
->   $\qquad \qquad \qquad s[j] = i$
->   $\qquad r[j] = q$
->   return $r$ and $s$
+>  let $r[0 : n]$ and $s[1 : n]$ be new arrays  
+>  $r[0] = 0$  
+>  for $j = 1$ to $n$  
+>  $\qquad q = -\infty$  
+>  $\qquad$for $i = 1$ to $j$  
+>  $\qquad \qquad$if $q < p[i] + r[j - i]$  
+>  $\qquad \qquad \qquad q = p[i] + r[j - i]$  
+>  $\qquad \qquad \qquad s[j] = i$  
+>  $\qquad r[j] = q$  
+>  return $r$ and $s$  
 
 > [!summary] Print-Cut-Rod-Solution $(p, n)$
 > $(r, s) =$ Extended-Bottom-Up-Cut-Rod$(p, n)$  
@@ -190,7 +184,7 @@ The **Rectangular-Matrix-Multiply** procedure computes $C = C + A \cdot B$ for t
 >   for $i = 1$ to $p$  
 >   $\qquad$for $j = 1$ to $q$  
 >   $\qquad \qquad$for $k = 1$ to $r$  
->   $\qquad \qquad \qquad$$c_{ij} = c_{ij} + a_{ik} \cdot b_{kj}$  
+>   $\qquad \qquad \qquad c_{ij} = c_{ij} + a_{ik} \cdot b_{kj}$  
 
 The running time of **Rectangular-Matrix-Multiply** is dominated by the number of scalar multiplications in last line, which is $pqr$. Therefore, we'll consider the cost of multiplying matrices to be the number of scalar multiplications. (The number of scalar multiplications dominates even if we consider initializing $C = 0$ to perform just $C = A \cdot B$.)
 
@@ -253,7 +247,7 @@ Instead of computing the solution to recurrence $(VII)$ recursively, let's compu
 >    $\qquad \qquad m[i, j] = \infty$  
 >    $\qquad$
 >    $\qquad \qquad$for $k = i$ to $j - 1$  
->    $\qquad \qquad \qquad$$q = m[i, k] + m[k + 1, j] + p_{i - 1} p_k p_j$  
+>    $\qquad \qquad \qquad q = m[i, k] + m[k + 1, j] + p_{i - 1} p_k p_j$  
 >    $\qquad \qquad \qquad$if $q < m[i, j]$  
 >    $\qquad \qquad \qquad \qquad m[i, j] = q$  
 >    $\qquad \qquad \qquad \qquad s[i, j] = k$  
@@ -401,20 +395,20 @@ The procedure also maintains the table $b[1 : m, 1 : n]$ to help in constructing
 > [!summary] LCS-Length$(X, Y, m, n)$
 > let $b[1 : m, 1 : n]$ and $c[0 : m, 0 : n]$ be new tables  
 > for $i = 1$ to $m$  
-> $\qquad$$c[i, 0] = 0$  
+> $\qquad c[i, 0] = 0$  
 > for $j = 0$ to $n$  
-> $\qquad$$c[0, j] = 0$  
+> $\qquad c[0, j] = 0$  
 > for $i = 1$ to $m$  
 > $\qquad$for $j = 1$ to $n$  
 > $\qquad \qquad$if $x_i == y_j$  
-> $\qquad \qquad \qquad$$c[i, j] = c[i - 1, j - 1] + 1$  
-> $\qquad \qquad \qquad$$b[i, j] =$ $\nwarrow$  
+> $\qquad \qquad \qquad c[i, j] = c[i - 1, j - 1] + 1$  
+> $\qquad \qquad \qquad b[i, j] =$ $\nwarrow$  
 > $\qquad \qquad$else if $c[i - 1, j] \geqslant c[i, j - 1]$  
-> $\qquad \qquad \qquad$$c[i, j] = c[i - 1, j]$  
-> $\qquad \qquad \qquad$$b[i, j] =$ $\uparrow$  
+> $\qquad \qquad \qquad c[i, j] = c[i - 1, j]$  
+> $\qquad \qquad \qquad b[i, j] =$ $\uparrow$  
 > $\qquad \qquad$else  
-> $\qquad \qquad \qquad$$c[i, j] = c[i, j - 1]$  
-> $\qquad \qquad \qquad$$b[i, j] =$ $\leftarrow$  
+> $\qquad \qquad \qquad c[i, j] = c[i, j - 1]$  
+> $\qquad \qquad \qquad b[i, j] =$ $\leftarrow$  
 > return $c$ and $b$  
 
 #### Step 4: Constructing an LCS
@@ -520,28 +514,24 @@ For the base case, compute $w[i, i - 1] = q_{i - 1}$ for $1 \leqslant i \leqslan
 The **Optimal-BST** procedure takes as inputs the probabilities $p_1, \ldots, p_n$ and $q_0, \ldots, q_n$ and the size $n,$ and it returns the tables $e$ and $\mathrm{root}$.
 
 > [!summary] Optimal-BST$(p, q, n)$
-> let $e[1 : n + 1; 0 : n], w[1 : n + 1, 0 : n],$ and $\mathrm{root}[1 : n; 1 : n]$ be new tables
-> for $i = 1$ to $n + 1$
-> $\qquad e[i, i - 1] = q_{i - 1}$
-> $\qquad w[i, i - 1] = q_{i - 1}$
-> $\qquad$
-> for $l = 1$ to $n$
-> $\qquad$for $i = 1$ to $n - l + 1$
-> $\qquad \qquad j = i + l - 1$
-> $\qquad \qquad e[i, j] = 1$
-> $\qquad \qquad w[i, j] = w[i, j - 1] + p_j + q_j$
-> $\qquad$
-> $\qquad \qquad$for $r = i$ to $j$
-> $\qquad \qquad \qquad t = e[i, r - 1] + e[r + 1, j] + w[i, j]$
-> $\qquad \qquad \qquad$if $t < e[i, j]$
-> $\qquad \qquad \qquad \qquad e[i, j] = t$
-> $\qquad \qquad \qquad \qquad \mathrm{root}[i, j] = r$
+> let $e[1 : n + 1; 0 : n], w[1 : n + 1, 0 : n],$ and $\mathrm{root}[1 : n; 1 : n]$ be new tables  
+> for $i = 1$ to $n + 1$  
+> $\qquad e[i, i - 1] = q_{i - 1}$  
+> $\qquad w[i, i - 1] = q_{i - 1}$  
+> $\qquad$  
+> for $l = 1$ to $n$  
+> $\qquad$for $i = 1$ to $n - l + 1$  
+> $\qquad \qquad j = i + l - 1$  
+> $\qquad \qquad e[i, j] = 1$  
+> $\qquad \qquad w[i, j] = w[i, j - 1] + p_j + q_j$  
+> $\qquad$  
+> $\qquad \qquad$for $r = i$ to $j$  
+> $\qquad \qquad \qquad t = e[i, r - 1] + e[r + 1, j] + w[i, j]$  
+> $\qquad \qquad \qquad$if $t < e[i, j]$  
+> $\qquad \qquad \qquad \qquad e[i, j] = t$  
+> $\qquad \qquad \qquad \qquad \mathrm{root}[i, j] = r$  
 > return $e$ and $\mathrm{root}$  
 
 The very first for loop initializes the values of $e[i, i - 1]$ and $w[i, i - 1]$. Then the second for loop uses the recurrences $(XIII)$ and $(XIV)$ to compute e$[i, j]$ and $w[i, j]$ for all $1 \leqslant i \leqslant j \leqslant n$. In the first iteration, when $l = 1,$ the loop computes $e[i, i]$ and $w[i, i]$ for $i = 1, 2, \ldots, n$. The second iteration, with $l = 2,$ computes $e[i, i + 1]$ and $w[i, i + 1]$ for $i = 1, 2, \ldots, n - 1,$ and so on. The innermost for loop, tries each candidate index $r$ to determine which key $k_r$ to use as the root of an optimal binary search tree containing keys $k_i, \ldots, k_j$. This for loop saves the current value of the index $r$ in $\mathrm{root}[i, j]$ whenever it finds a better key to use as the root.
 
 The **Optimal-BST** procedure takes $\Theta(n^3)$ time, just like **Matrix-Chain-Order**. Its running time is $O(n^3),$ since its for loops are nested three deep and each loop index takes on at most $n$ values. The loop indices in **Optimal-BST** do not have exactly the same bounds as those in **Matrix-Chain-Order**, but they are within at most $1$ in all directions. Thus, like **Matrix-Chain-Order**, the **Optimal-BST** procedure takes $\Omega(n^3)$ time.
-___
-$$
-***
-$$

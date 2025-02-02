@@ -15,17 +15,14 @@ The numbers to be sorted are also known as the **keys**. When we want to sort nu
 The pseudocode for insertion sort is given as the procedure **Insertion-Sort**. 
 It takes two parameters: an array $A$ containing the values to be sorted and the number $n$ of values of sort. The values occupy positions $A[1]$ through $A[n]$ of the array, which we denote by $A[1:n]$. When the Insertion-Sort procedure is finished, array $A[1:n]$ contains the original values, but in sorted order.
 
-* **Algorithm**: The Insertion Sort.
-  **procedure** Insertion-sort($A$: real numbers with size $n \geqslant 2$)
-  for $i := 2$ to $n$
-  $\qquad key := A[i]$
-  $\qquad$$j = i - 1$
-  $\qquad$while $j > 0$ and $A[j] > key$  
-  $\qquad \qquad A[j + 1] := A[j]$
-  $\qquad \qquad j := j - 1$
-  $\qquad A[j + 1] := key$
-  
-  **Output**: {$a_1, \ldots, a_n$ is in increasing order}
+> [!summary] Insertion-Sort$(A,n)$
+> for $i=2$ to $n$  
+> $\qquad key=A[i]$  
+> $\qquad j=i-1$  
+> $\qquad$while $j>0$ and $A[j]>key$  
+> $\qquad\qquad A[j+1]=A[j]$  
+> $\qquad\qquad j=j-1$  
+> $\qquad A[j+1]=key$  
 
 The index $i$ indicates the "current key" being inserted into the final array. At the beginning of each iteration of the for loop, which is indexed by $i$, the subarray (a contiguous portion of the array) consisting of elements $A[1: i - 1]$ constitutes the currently sorted array, and the remaining subarray $A[i + 1 : n]$ corresponds to the elements remaining in the given array. In fact, elements $A[1: i - 1]$ are the elements originally in positions $1$ through $i - 1$, but now in sorted order. We state these properties of $A[1: i - 1]$ formally as a **loop invariant**: $$\begin{align*}
 & \text{At the start of each iteration of the for loop, the subarray A[1 : i - 1] }&  \\ 
@@ -76,7 +73,9 @@ $$\begin{align*}
 & \qquad A[j + 1] := key & c_7 \qquad n - 1 \\
 \end{align*}$$
 The running time of the algorithm is the sum of running times for each statement executed. We denote the running time of an algorithm on an input of size $n$ by $T(n)$. To compute $T(n)$, the running time of Insertion-Sort on an input of $n$ values, we sum the products of the cost and times columns, obtaining $$\begin{align*}
-& T(n) = c_1n + c_2(n - 1) + c_3(n - 1) + c_4 \sum_{i = 2}^{n} t_i + c_5 \sum_{i = 2}^{n} (t_i -1) + c_6 \sum_{i = 2}^{n} (t_i -1) + c_7(n - 1). &
+T(n) =  & c_1n + c_2(n - 1) + c_3(n - 1) +
+c_4 \sum_{i = 2}^{n} t_i + \\
+& c_5 \sum_{i = 2}^{n} (t_i -1) + c_6 \sum_{i = 2}^{n} (t_i -1) + c_7(n - 1). &
 \end{align*}$$
 Even for inputs of a given size, an algorithm's running time may depend on which input of that size is given. For example, in Insertion-Sort, the **best case** occurs when the array is already sorted. Therefore, we have that $t_i = 1$ for $i = 2, 3, \ldots, n,$ and the best-case running time is given by $$\begin{align*}
 & T(n) = c_1n + c_2(n - 1) + c_3(n - 1) + c_4(n - 1) + c_7(n - 1). & \\
@@ -84,7 +83,7 @@ Even for inputs of a given size, an algorithm's running time may depend on which
 \end{align*}$$We can express this running time as $an + b$ for constants $a$ and $b$ that depend on the statement costs $c_k$. The running time is thus a **linear function** of $n$.
 
 The **worst case** arises when the array is in reverse sorted order. The procedure must compare each element $A[i]$ with each element in the entire sorted subarray $A[1 : i - 1]$, and so $t_i = i$ for $i = 2, 3, \ldots, n,$. In the worst case, the running time of Insertion-Sort is $$\begin{align*}
-& T(n) = c_1n + c_2(n - 1) + c_3(n - 1) + c_4 \left( \frac{n(n - 1)}{2} - 1 \right) +  (c_5  + c_6) \left( \frac{n(n - 1)}{2} \right) + c_7(n - 1). &
+T(n) = \space & c_1n + c_2(n - 1) + c_3(n - 1) + c_4 \left( \frac{n(n - 1)}{2} - 1 \right) +  \\ & (c_5  + c_6) \left( \frac{n(n - 1)}{2} \right) + c_7(n - 1). &
 \end{align*}$$
 We can express this worst-case running time as $an^2 + bn + c$ for constants $a, b,$ and $c$ that again depend on the statement costs $c_k$. The running time is thus a **quadratic function** of $n$.
 The worst-case running time of an algorithm gives an upper bound on the running time for any input. If you know it, then you have a guarantee that the algorithm never takes any longer.
@@ -116,51 +115,46 @@ The **merge sort** algorithm closely follows the divide-and-conquer method. In e
 
 The recursion "bottoms out"$-$it reaches the base case$-$when the subarray $A [p : r]$ to be sorted has just $1$ element, that is, when $p$ equals $r$.
 
-* **Algorithm**: The Merge Sort
-  **procedure** merge-sort ($A$: real numbers with indices $p$: start and $r$: end)
-  if $p \geqslant r$
-  $\qquad$$return$
-  $q = \lfloor (p + q) / 2 \rfloor$
-  merge-sort $(A, p, q)$
-  merge-sort $(A, q + 1, r)$
-  Merge $(A, p, q, r)$
-  
-  **Output**: {$a_1, \ldots, a_n$ is in increasing order}
+> [!summary] Merge-Sort$(A, p,r)$
+> if $p \geqslant r$  
+> $\qquad return$  
+> $q = \lfloor (p + q) / 2 \rfloor$  
+> merge-sort $(A, p, q)$  
+> merge-sort $(A, q + 1, r)$  
+> Merge $(A, p, q, r)$  
 
 The merge operation is performed by the auxiliary procedure $Merge \, (A, p, q, r)$, where $A$ is an array and $p, q,$ and $r$ are indices into the array such that $p \leqslant q < r$. The procedure assumes that the adjacent subarrays $A [p : q]$ and $A [q + 1 : r]$ were already sorted. It **merges** the two sorted subarrays to form a single sorted subarray that replaces the current subarray $A [p : r]$.
 With each basic step taking constant time and the total number of basic steps being between $n/2$ and $n$, we can say that merging takes time roughly proportional to $n$. That is, merging takes $\Theta(n)$ time.
 
 * **procedure** Merge ($A$: real numbers with indices $p$: start, $q$: mid and $r$: end)
-  $n_L = q - p + 1$
-  $n_R = r - q$
-  let $L[0 : n_L - 1]$ and $R[0 : n_R - 1]$ be new arrays
-  for $i = 0$ to $n_L - 1$
-  $\qquad$$L[i] = A[p + i]$
-  for $j = 0$ to $n_R - 1$
-  $\qquad$$R[j] = A[q + j + 1]$
-  $i = 0$
-  $j = 0$
-  $k = p$
-  
-  while $i < n_L$ and $j < n_R$
-  $\qquad$if $L[i] \leqslant R[j]$
-  $\qquad \qquad$$A[k] = L[i]$
-  $\qquad \qquad$$i = i + 1$
-  $\qquad$else 
-  $\qquad \qquad$$A[k] = R[j]$
-  $\qquad \qquad$$j = j + 1$
-  $\qquad$$k = k + 1$
-  
-  while $i < n_L$
-  $\qquad$$A[k] = L[i]$
-  $\qquad$$i = i + 1$
-  $\qquad$$k = k + 1$
-  while $j < n_R$
-  $\qquad$$A[k] = R[j]$
-  $\qquad$$j = j + 1$
-  $\qquad$$k = k + 1$
-  
-  **Output**: $\{ A[p : r] \}$
+
+> [!summary] Merge$(A,p,q,r)$
+> $n_L = q - p + 1$  
+> $n_R = r - q$  
+> let $L[0 : n_L - 1]$ and $R[0 : n_R - 1]$ be new arrays  
+> for $i = 0$ to $n_L - 1$  
+> $\qquad L[i] = A[p + i]$  
+> for $j = 0$ to $n_R - 1$  
+> $\qquad R[j] = A[q + j + 1]$  
+> $i = 0$  
+> $j = 0$  
+> $k = p$  
+> while $i < n_L$ and $j < n_R$  
+> $\qquad$if $L[i] \leqslant R[j]$  
+> $\qquad \qquad A[k] = L[i]$  
+> $\qquad \qquad i = i + 1$  
+> $\qquad$else   
+> $\qquad \qquad A[k] = R[j]$  
+> $\qquad \qquad j = j + 1$  
+> $\qquad k = k + 1$  
+> while $i < n_L$  
+> $\qquad A[k] = L[i]$  
+> $\qquad i = i + 1$  
+> $\qquad k = k + 1$  
+> while $j < n_R$  
+> $\qquad A[k] = R[j]$  
+> $\qquad j = j + 1$  
+> $\qquad k = k + 1$  
 
 In detail, the Merge procedure works as follows. It copies the two subarrays $A [p : q]$ and $A [q + 1 : r]$ into temporary arrays $L$ and $R$ ("left" and "right"), and then it merges the values in $L$ and $R$ back into $A [p : r]$. Line $1$ and $2$ compute the lengths $n_L$ and $n_R$ of the subarrays $A [p : q]$ and $A [q + 1 : r]$, respectively. Then line $3$ creates arrays $L [0 : n_L - 1]$ and $R [0 : n_R - 1]$ with respective lengths $n_L$ and $n_R$ . The for loop of lines $4 - 5$ copies the subarray $A [p : q]$ into $L$, and the for loop of lines $6 - 7$ copies the subarray $A [q + 1 : r]$ into $R$.
 
